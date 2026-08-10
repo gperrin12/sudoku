@@ -21,33 +21,34 @@ export function WinOverlay({
   onMenu,
 }: WinOverlayProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl dark:bg-slate-800">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Puzzle Solved!</h2>
-        <p className="mt-1 text-slate-500 dark:text-slate-400">
-          {DIFFICULTY_LABELS[difficulty]} difficulty
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ocean-900/50 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-sm rounded-3xl border-2 border-sand-300 bg-sand-50 p-6 text-center shadow-2xl">
+        <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-b from-sun-300 to-sun-500 shadow-md">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#123540" strokeWidth={2} className="h-7 w-7">
+            <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <h2 className="font-display text-2xl font-extrabold text-ocean-900">
+          Smooth Sailing!
+        </h2>
+        <p className="mt-1 font-medium text-sand-800/70">
+          {DIFFICULTY_LABELS[difficulty]} · puzzle solved
         </p>
 
         {isNewBest && (
-          <p className="mt-3 inline-block rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
+          <p className="mt-3 inline-block rounded-full bg-coral-100 px-3 py-1 text-sm font-bold text-coral-700">
             New best time!
           </p>
         )}
 
         <div className="mt-5 grid grid-cols-2 gap-3">
-          <div className="rounded-lg bg-slate-100 p-3 dark:bg-slate-700">
-            <p className="text-xs tracking-wide text-slate-500 uppercase dark:text-slate-400">
-              Time
-            </p>
-            <p className="text-xl font-semibold text-slate-900 dark:text-white">
-              {formatTime(elapsedSeconds)}
-            </p>
+          <div className="rounded-xl border-2 border-sand-200 bg-white p-3">
+            <p className="text-xs font-bold tracking-wide text-sand-700/70 uppercase">Time</p>
+            <p className="text-xl font-extrabold text-ocean-900">{formatTime(elapsedSeconds)}</p>
           </div>
-          <div className="rounded-lg bg-slate-100 p-3 dark:bg-slate-700">
-            <p className="text-xs tracking-wide text-slate-500 uppercase dark:text-slate-400">
-              Mistakes
-            </p>
-            <p className="text-xl font-semibold text-slate-900 dark:text-white">{mistakes}</p>
+          <div className="rounded-xl border-2 border-sand-200 bg-white p-3">
+            <p className="text-xs font-bold tracking-wide text-sand-700/70 uppercase">Mistakes</p>
+            <p className="text-xl font-extrabold text-ocean-900">{mistakes}</p>
           </div>
         </div>
 
@@ -55,14 +56,14 @@ export function WinOverlay({
           <button
             type="button"
             onClick={onPlayAgain}
-            className="w-full rounded-xl bg-sky-600 px-6 py-3 font-semibold text-white shadow-md transition-colors hover:bg-sky-700"
+            className="w-full rounded-full bg-gradient-to-b from-ocean-400 to-ocean-600 px-6 py-3 font-bold text-white shadow-[0_6px_0_0_rgba(30,98,114,0.6)] transition-transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_3px_0_0_rgba(30,98,114,0.6)]"
           >
             Play Again
           </button>
           <button
             type="button"
             onClick={onMenu}
-            className="w-full rounded-xl border border-slate-300 px-6 py-3 font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+            className="w-full rounded-full border-2 border-sand-300 bg-white px-6 py-3 font-bold text-ocean-800 transition-colors hover:bg-sand-100"
           >
             Main Menu
           </button>

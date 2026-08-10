@@ -28,10 +28,10 @@ function ControlButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`flex flex-1 flex-col items-center gap-1 rounded-lg border px-2 py-2 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-30 sm:text-sm ${
+      className={`flex flex-1 flex-col items-center gap-1 rounded-xl border-2 px-2 py-2 text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:translate-y-0 sm:text-sm ${
         active
-          ? "border-sky-500 bg-sky-100 text-sky-700 dark:border-sky-400 dark:bg-sky-900/60 dark:text-sky-200"
-          : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          ? "border-ocean-500 bg-ocean-500 text-white shadow-[0_3px_0_0_rgba(30,98,114,0.6)]"
+          : "border-sand-300 bg-white text-ocean-800 shadow-[0_3px_0_0_rgba(180,124,48,0.3)] hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-ocean-50"
       }`}
     >
       <span className="h-5 w-5">{icon}</span>
