@@ -38,35 +38,33 @@ export function GameScreen({ game }: GameScreenProps) {
   if (!board || !given) return null;
 
   return (
-    <div className="flex w-full max-w-md flex-col gap-4 px-4 py-6">
+    <div className="relative flex w-full max-w-md flex-col gap-4 px-4 py-6">
       <header className="flex items-center justify-between">
         <button
           type="button"
           onClick={goToMenu}
-          className="flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+          className="flex items-center gap-1 rounded-full bg-white/70 px-3 py-1.5 text-sm font-bold text-ocean-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
             <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           Menu
         </button>
-        <span className="rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold tracking-wide text-slate-600 uppercase dark:bg-slate-700 dark:text-slate-300">
+        <span className="rounded-full bg-gradient-to-r from-sun-400 to-sun-500 px-3.5 py-1.5 text-xs font-extrabold tracking-wide text-ocean-900 uppercase shadow-sm">
           {DIFFICULTY_LABELS[difficulty]}
         </span>
       </header>
 
-      <div className="flex items-center justify-between rounded-xl bg-white px-4 py-2.5 shadow-sm dark:bg-slate-800">
-        <div className="flex items-center gap-1.5 text-sm font-medium text-slate-600 dark:text-slate-300">
-          <span>Mistakes:</span>
-          <span className={mistakes > 0 ? "font-semibold text-red-500" : "font-semibold"}>
-            {mistakes}
-          </span>
+      <div className="flex items-center justify-between rounded-2xl border-2 border-sand-300 bg-sand-50/90 px-4 py-2.5 shadow-sm backdrop-blur-sm">
+        <div className="flex items-center gap-1.5 text-sm font-bold text-ocean-800">
+          <span className="font-medium text-sand-800/70">Mistakes:</span>
+          <span className={mistakes > 0 ? "text-coral-600" : ""}>{mistakes}</span>
         </div>
         <button
           type="button"
           onClick={togglePause}
           aria-label={isPaused ? "Resume timer" : "Pause timer"}
-          className="flex items-center gap-2 text-sm font-medium tabular-nums text-slate-600 dark:text-slate-300"
+          className="flex items-center gap-2 text-sm font-bold tabular-nums text-ocean-800"
         >
           {formatTime(elapsedSeconds)}
           {isPaused ? (
@@ -91,11 +89,11 @@ export function GameScreen({ game }: GameScreenProps) {
           onSelect={selectCell}
         />
         {isPaused && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-slate-100/90 backdrop-blur-sm dark:bg-slate-900/90">
+          <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-sand-100/90 backdrop-blur-sm">
             <button
               type="button"
               onClick={togglePause}
-              className="rounded-xl bg-sky-600 px-6 py-3 font-semibold text-white shadow-md transition-colors hover:bg-sky-700"
+              className="rounded-full bg-gradient-to-b from-ocean-400 to-ocean-600 px-6 py-3 font-bold text-white shadow-[0_6px_0_0_rgba(30,98,114,0.6)] transition-transform hover:-translate-y-0.5"
             >
               Resume
             </button>

@@ -23,7 +23,7 @@ export function SudokuBoard({
   const selectedValue = selected ? board[selected.r][selected.c] : 0;
 
   return (
-    <div className="grid aspect-square w-full grid-cols-9 grid-rows-9 overflow-hidden rounded-lg border-2 border-slate-400 bg-white shadow-lg dark:border-slate-500 dark:bg-slate-900">
+    <div className="grid aspect-square w-full grid-cols-9 grid-rows-9 overflow-hidden rounded-2xl border-2 border-sand-600 bg-white shadow-xl">
       {board.map((rowValues, r) =>
         rowValues.map((value, c) => {
           const isSelected = selected?.r === r && selected?.c === c;

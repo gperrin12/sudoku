@@ -1,6 +1,7 @@
 "use client";
 
 import { useSudokuGame } from "@/hooks/useSudokuGame";
+import { BeachBackdrop } from "./BeachBackdrop";
 import { StartScreen } from "./StartScreen";
 import { GameScreen } from "./GameScreen";
 import { WinOverlay } from "./WinOverlay";
@@ -9,7 +10,8 @@ export function SudokuApp() {
   const game = useSudokuGame();
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-slate-50 dark:bg-slate-950">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center">
+      <BeachBackdrop />
       {game.status === "menu" ? (
         <StartScreen
           hasSavedGame={game.hasSavedGame}
