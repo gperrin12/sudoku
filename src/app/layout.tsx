@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Baloo_2, Nunito } from "next/font/google";
+import { Baloo_2, Cinzel, Nunito } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const baloo = Baloo_2({
-  variable: "--font-display",
+  variable: "--font-display-beach",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+});
+
+const cinzel = Cinzel({
+  variable: "--font-display-istanbul",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
 });
@@ -15,8 +21,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Sudoku Beach",
-  description: "A breezy Sudoku game with Easy, Medium, Hard, and Expert difficulty modes.",
+  title: "Sudoku",
+  description: "A themed Sudoku game with Easy, Medium, Hard, and Expert difficulty modes.",
 };
 
 export default function RootLayout({
@@ -27,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${baloo.variable} ${nunito.variable} h-full antialiased`}
+      className={`${baloo.variable} ${cinzel.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {children}

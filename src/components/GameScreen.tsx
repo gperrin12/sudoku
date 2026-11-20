@@ -39,7 +39,7 @@ export function GameScreen({ game }: GameScreenProps) {
 
   return (
     <div className="relative flex w-full max-w-md flex-col gap-4 px-4 py-6">
-      <header className="flex items-center justify-between">
+      <header className="flex items-center justify-start gap-2">
         <button
           type="button"
           onClick={goToMenu}
