@@ -3,60 +3,95 @@ interface TurkishFlagProps {
   flip?: boolean;
 }
 
-/** A small waving Turkish flag (red field, white crescent + star). */
+/**
+ * Flag and pole share one viewBox so the hoist stays on the pole.
+ * Crescent opens toward the fly; the star is a regular pentagram beside it.
+ */
 function TurkishFlag({ className, flip }: TurkishFlagProps) {
   return (
     <svg
-      viewBox="0 0 30 20"
+      viewBox="0 0 52 96"
       className={className}
       style={flip ? { transform: "scaleX(-1)" } : undefined}
     >
-      <path d="M0,0 H22 C18,5 26,8 22,13 C18,18 26,15 22,20 H0 Z" fill="#d94c38" />
-      <circle cx="10" cy="10" r="5.2" fill="#fdf8ec" />
-      <circle cx="11.6" cy="10" r="4.2" fill="#d94c38" />
+      <rect x="1.25" y="6" width="2.5" height="88" rx="0.4" fill="#4a3420" />
+      <path d="M3.75 6 H40 C36 12 48 14 40 19 C36 24 48 26 40 32 H3.75 Z" fill="#d94c38" />
+      <circle cx="16.75" cy="19" r="6.5" fill="#fff" />
+      <circle cx="18.9" cy="19" r="5.2" fill="#d94c38" />
       <path
-        d="M17.2 10l2.6-0.85-1.6 2.2 1.6 2.2-2.6-0.85-1.6 2.2 0-2.3-2.47-0.8 2.47-0.8 0-2.3z"
-        fill="#fdf8ec"
+        d="M29.2 14.7 L30.2 17.62 L33.29 17.67 L30.82 19.53 L31.73 22.48 L29.2 20.7 L26.67 22.48 L27.58 19.53 L25.11 17.67 L28.2 17.62 Z"
+        fill="#fff"
       />
     </svg>
   );
 }
 
+const BUNTING_WIDTH = 1200;
+const BUNTING_HEIGHT = 72;
 const BUNTING_POINTS: [number, number][] = [
-  [-20, 30],
-  [40, 52],
-  [100, 26],
-  [160, 54],
-  [220, 24],
-  [280, 54],
-  [340, 26],
-  [400, 52],
-  [460, 28],
-  [500, 48],
+  [-40, 28],
+  [60, 46],
+  [160, 24],
+  [260, 48],
+  [360, 22],
+  [460, 50],
+  [560, 24],
+  [660, 48],
+  [760, 22],
+  [860, 50],
+  [960, 24],
+  [1060, 46],
+  [1160, 26],
+  [1260, 44],
 ];
 
 function BuntingString() {
   const linePath = `M${BUNTING_POINTS.map(([x, y]) => `${x},${y}`).join(" L")}`;
+  const pennants = BUNTING_POINTS.slice(0, -1).map(([x1, y1], i) => {
+    const [x2, y2] = BUNTING_POINTS[i + 1];
+    const mx = (x1 + x2) / 2;
+    const my = (y1 + y2) / 2;
+    const dx = ((x2 - x1) / BUNTING_WIDTH) * 100;
+    const dy = ((y2 - y1) / BUNTING_HEIGHT) * 100;
+    return { i, mx, my, dx, dy, color: i % 2 === 0 ? "#d94c38" : "#fdf8ec" };
+  });
 
   return (
-    <svg
-      className="absolute top-2 left-0 h-20 w-full sm:top-3"
-      viewBox="0 0 480 90"
-      preserveAspectRatio="none"
-    >
-      <path d={linePath} fill="none" stroke="#5c3f26" strokeWidth="1" opacity="0.5" />
-      {BUNTING_POINTS.slice(0, -1).map(([x, y], i) => {
-        const color = i % 2 === 0 ? "#d94c38" : "#fdf8ec";
-        return (
-          <path
-            key={i}
-            d={`M${x - 10},${y} L${x + 10},${y} L${x},${y + 20} Z`}
-            fill={color}
-            opacity="0.9"
-          />
-        );
-      })}
-    </svg>
+    <div className="absolute top-1 left-0 h-16 w-full [container-type:size] sm:top-2 sm:h-20">
+      <svg
+        className="h-full w-full"
+        viewBox={`0 0 ${BUNTING_WIDTH} ${BUNTING_HEIGHT}`}
+        preserveAspectRatio="none"
+      >
+        <path
+          d={linePath}
+          fill="none"
+          stroke="#f8ecd2"
+          strokeWidth="1.5"
+          vectorEffect="non-scaling-stroke"
+          opacity="0.85"
+        />
+      </svg>
+      {pennants.map((pennant) => (
+        <span
+          key={pennant.i}
+          className="absolute"
+          style={{
+            left: `${(pennant.mx / BUNTING_WIDTH) * 100}%`,
+            top: `${(pennant.my / BUNTING_HEIGHT) * 100}%`,
+            display: "block",
+            width: 18,
+            marginLeft: -9,
+            transformOrigin: "top center",
+            transform: `rotate(atan2(${pennant.dy.toFixed(3)}cqh, ${pennant.dx.toFixed(3)}cqw))`,
+          }}
+        >
+          <svg width="18" height="22" viewBox="0 0 18 22" aria-hidden="true">
+            <path d="M1 0.6 H17 L9 21 Z" fill={pennant.color} stroke="#5c3f26" strokeWidth="0.6" />
+          </svg>
+        </span>
+      ))}
+    </div>
   );
 }
 
@@ -124,9 +159,8 @@ export function IstanbulBackdrop() {
         <path d="M435,50 L441,34 L447,50 Z" fill="#16222e" />
       </svg>
 
-      {/* Turkish flag flying in the clear sky, top-left */}
-      <div className="absolute top-20 left-5 h-14 w-0.5 bg-[#4a3420] sm:top-24 sm:left-8 sm:h-16" />
-      <TurkishFlag className="absolute top-20 left-5 h-9 w-14 -rotate-2 drop-shadow-sm sm:top-24 sm:left-8 sm:h-10 sm:w-16" />
+      {/* Turkish flag on its own pole, top-left. The pole is part of the SVG. */}
+      <TurkishFlag className="absolute top-14 left-3 h-24 w-auto drop-shadow-sm sm:top-16 sm:left-6 sm:h-28" />
 
       {/* Ferry on the Bosphorus */}
       <svg className="absolute top-[60%] left-[16%] h-6 w-14 opacity-80 sm:top-[62%]" viewBox="0 0 56 24">
@@ -175,9 +209,8 @@ export function IstanbulBackdrop() {
         <path d="M12 12.6V21" stroke="#1e6272" strokeWidth="1.2" fill="none" />
       </svg>
 
-      {/* A second Turkish flag planted in the foreground, near the tile band */}
-      <div className="absolute right-[10%] bottom-[4%] h-12 w-0.5 bg-[#4a3420] sm:h-14" />
-      <TurkishFlag flip className="absolute right-[10%] bottom-[11%] h-8 w-14 rotate-2 drop-shadow-sm sm:h-9" />
+      {/* A second flag planted in the foreground. Flip keeps the pole on the right. */}
+      <TurkishFlag flip className="absolute right-[8%] bottom-0 h-20 w-auto drop-shadow-sm sm:h-24" />
     </div>
   );
 }

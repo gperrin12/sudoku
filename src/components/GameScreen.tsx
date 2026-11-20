@@ -55,10 +55,10 @@ export function GameScreen({ game }: GameScreenProps) {
         </span>
       </header>
 
-      <div className="flex items-center justify-between rounded-2xl border-2 border-sand-300 bg-sand-50/90 px-4 py-2.5 shadow-sm backdrop-blur-sm">
+        <div className="flex items-center justify-between rounded-2xl border-2 border-sand-300 bg-sand-50 px-4 py-2.5 shadow-sm">
         <div className="flex items-center gap-1.5 text-sm font-bold text-ocean-800">
-          <span className="font-medium text-sand-800/70">Mistakes:</span>
-          <span className={mistakes > 0 ? "text-coral-600" : ""}>{mistakes}</span>
+          <span className="font-medium text-sand-800">Mistakes:</span>
+          <span className={mistakes > 0 ? "text-coral-800" : ""}>{mistakes}</span>
         </div>
         <button
           type="button"
@@ -93,7 +93,7 @@ export function GameScreen({ game }: GameScreenProps) {
             <button
               type="button"
               onClick={togglePause}
-              className="rounded-full bg-gradient-to-b from-ocean-400 to-ocean-600 px-6 py-3 font-bold text-white shadow-[0_6px_0_0_rgba(30,98,114,0.6)] transition-transform hover:-translate-y-0.5"
+              className="rounded-full bg-gradient-to-b from-ocean-600 to-ocean-800 px-6 py-3 font-bold text-white shadow-[0_6px_0_0_var(--shadow-ocean)] transition-transform hover:-translate-y-0.5"
             >
               Resume
             </button>

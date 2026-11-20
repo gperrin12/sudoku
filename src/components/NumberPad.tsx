@@ -17,7 +17,7 @@ export function NumberPad({ digitCounts, onInput, disabled }: NumberPadProps) {
             type="button"
             disabled={disabled || isComplete}
             onClick={() => onInput(digit)}
-            className="flex aspect-square items-center justify-center rounded-xl border-2 border-sand-300 bg-white text-lg font-bold text-ocean-800 shadow-[0_3px_0_0_rgba(180,124,48,0.3)] transition-all hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-ocean-50 active:translate-y-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:translate-y-0 disabled:hover:border-sand-300 disabled:hover:bg-white sm:text-xl"
+            className="flex aspect-square items-center justify-center rounded-xl border-2 border-sand-300 bg-white text-lg font-bold text-ocean-800 shadow-[0_3px_0_0_var(--shadow-sand)] transition-all hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-ocean-50 active:translate-y-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:translate-y-0 disabled:hover:border-sand-300 disabled:hover:bg-white sm:text-xl"
           >
             {digit}
           </button>

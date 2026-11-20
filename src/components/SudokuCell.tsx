@@ -41,9 +41,9 @@ export function SudokuCell({
 
   let textColor = "text-ocean-900";
   if (isConflict) {
-    textColor = "text-coral-600";
+    textColor = "text-coral-800";
   } else if (!isGiven && value !== 0) {
-    textColor = "text-ocean-500";
+    textColor = "text-ocean-700";
   }
 
   return (
@@ -64,7 +64,7 @@ export function SudokuCell({
           {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => (
             <span
               key={n}
-              className="flex items-center justify-center text-[8px] leading-none text-ocean-600/70 sm:text-[10px]"
+              className="flex items-center justify-center text-[8px] leading-none text-ocean-700 sm:text-[10px]"
             >
               {notes.includes(n) ? n : ""}
             </span>

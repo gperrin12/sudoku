@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Baloo_2, Cinzel, Nunito } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { THEME_INIT_SCRIPT } from "@/lib/themeContent";
 import "./globals.css";
 
 const baloo = Baloo_2({
@@ -33,9 +34,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${baloo.variable} ${cinzel.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         {children}
         <Analytics />
       </body>

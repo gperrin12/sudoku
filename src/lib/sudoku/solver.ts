@@ -46,6 +46,32 @@ function buildMasks(board: Board) {
 
 type BestCell = { r: number; c: number; candidates: number } | "solved";
 
+/** Minimum-remaining-values cell. Shared so the counter and solver cannot drift. */
+function findBestCell(
+  working: Board,
+  rows: number[],
+  cols: number[],
+  boxes: number[]
+): BestCell {
+  let best: { r: number; c: number; candidates: number } | null = null;
+  let bestCount = SIZE + 1;
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      if (working[r][c] !== 0) continue;
+      const used = rows[r] | cols[c] | boxes[boxIndex(r, c)];
+      const candidates = FULL_MASK & ~used;
+      const n = popcount(candidates);
+      if (n === 0) return { r, c, candidates: 0 };
+      if (n < bestCount) {
+        bestCount = n;
+        best = { r, c, candidates };
+        if (n === 1) return best;
+      }
+    }
+  }
+  return best ?? "solved";
+}
+
 /**
  * Counts the number of solutions for a board, stopping early once `cap` is
  * reached. Uses a minimum-remaining-values heuristic so that nearly-solved
@@ -56,29 +82,9 @@ export function countSolutions(board: Board, cap = 2): number {
   const { rows, cols, boxes } = buildMasks(working);
   let count = 0;
 
-  function findBestCell(): BestCell {
-    let best: { r: number; c: number; candidates: number } | null = null;
-    let bestCount = SIZE + 1;
-    for (let r = 0; r < SIZE; r++) {
-      for (let c = 0; c < SIZE; c++) {
-        if (working[r][c] !== 0) continue;
-        const used = rows[r] | cols[c] | boxes[boxIndex(r, c)];
-        const candidates = FULL_MASK & ~used;
-        const n = popcount(candidates);
-        if (n === 0) return { r, c, candidates: 0 };
-        if (n < bestCount) {
-          bestCount = n;
-          best = { r, c, candidates };
-          if (n === 1) return best;
-        }
-      }
-    }
-    return best ?? "solved";
-  }
-
   function backtrack(): void {
     if (count >= cap) return;
-    const cell = findBestCell();
+    const cell = findBestCell(working, rows, cols, boxes);
     if (cell === "solved") {
       count++;
       return;
@@ -119,28 +125,8 @@ export function solveBoard(board: Board): Board | null {
   const { rows, cols, boxes } = buildMasks(working);
   let solved = false;
 
-  function findBestCell(): BestCell {
-    let best: { r: number; c: number; candidates: number } | null = null;
-    let bestCount = SIZE + 1;
-    for (let r = 0; r < SIZE; r++) {
-      for (let c = 0; c < SIZE; c++) {
-        if (working[r][c] !== 0) continue;
-        const used = rows[r] | cols[c] | boxes[boxIndex(r, c)];
-        const candidates = FULL_MASK & ~used;
-        const n = popcount(candidates);
-        if (n === 0) return { r, c, candidates: 0 };
-        if (n < bestCount) {
-          bestCount = n;
-          best = { r, c, candidates };
-          if (n === 1) return best;
-        }
-      }
-    }
-    return best ?? "solved";
-  }
-
   function backtrack(): boolean {
-    const cell = findBestCell();
+    const cell = findBestCell(working, rows, cols, boxes);
     if (cell === "solved") return true;
     const { r, c, candidates } = cell;
     if (candidates === 0) return false;

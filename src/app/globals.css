@@ -36,6 +36,10 @@
   --clr-coral-500: #ff6b48;
   --clr-coral-600: #ec5030;
   --clr-coral-700: #c53d21;
+  --clr-coral-800: #9a341c;
+
+  --shadow-ocean: rgb(18 53 64 / 0.6);
+  --shadow-sand: rgb(111 77 38 / 0.35);
 
   --clr-sun-200: #fff3c4;
   --clr-sun-300: #ffe58a;
@@ -76,6 +80,10 @@
   --clr-coral-500: #d94c38;
   --clr-coral-600: #b53223;
   --clr-coral-700: #8f271b;
+  --clr-coral-800: #6e1d14;
+
+  --shadow-ocean: rgb(15 46 64 / 0.6);
+  --shadow-sand: rgb(92 63 38 / 0.35);
 
   --clr-sun-200: #f7e3a1;
   --clr-sun-300: #f0cf6e;
@@ -120,6 +128,7 @@
   --color-coral-500: var(--clr-coral-500);
   --color-coral-600: var(--clr-coral-600);
   --color-coral-700: var(--clr-coral-700);
+  --color-coral-800: var(--clr-coral-800);
 
   --color-sun-200: var(--clr-sun-200);
   --color-sun-300: var(--clr-sun-300);
@@ -132,4 +141,54 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+:focus-visible {
+  outline: 2px solid var(--clr-ocean-800);
+  outline-offset: 2px;
+}
+
+/* Both backdrops and both copies are in the server HTML. The pre-paint
+   script sets data-theme on <html>, so the first paint matches localStorage. */
+.theme-backdrop-istanbul {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-backdrop-beach {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-backdrop-istanbul {
+  display: block;
+}
+
+.theme-copy-istanbul {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-copy-beach {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-copy-istanbul {
+  display: inline;
+}
+
+.theme-option {
+  color: var(--clr-ocean-700);
+}
+
+.theme-option:hover {
+  background-color: var(--clr-ocean-100);
+}
+
+html:not([data-theme="istanbul"]) .theme-option[data-theme-option="beach"],
+html[data-theme="istanbul"] .theme-option[data-theme-option="istanbul"] {
+  background-color: var(--clr-ocean-700);
+  color: #fff;
+}
+
+html:not([data-theme="istanbul"]) .theme-option[data-theme-option="beach"]:hover,
+html[data-theme="istanbul"] .theme-option[data-theme-option="istanbul"]:hover {
+  background-color: var(--clr-ocean-700);
 }

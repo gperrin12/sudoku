@@ -1,5 +1,8 @@
 import type { Difficulty } from "@/lib/sudoku";
-import type { AppTheme } from "@/hooks/useTheme";
+
+export type AppTheme = "beach" | "istanbul";
+
+export const THEME_STORAGE_KEY = "sudoku:theme:v1";
 
 export interface ThemeContent {
   title: string;
@@ -38,3 +41,6 @@ export const THEME_CONTENT: Record<AppTheme, ThemeContent> = {
     winSubtext: "puzzle solved",
   },
 };
+
+/** Runs before paint so a stored theme does not flash the beach palette. */
+export const THEME_INIT_SCRIPT = `(function(){try{var s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});var t=s==="istanbul"?"istanbul":"beach";document.documentElement.setAttribute("data-theme",t);document.title=t==="istanbul"?${JSON.stringify(THEME_CONTENT.istanbul.title)}:${JSON.stringify(THEME_CONTENT.beach.title)};}catch(e){}})();`;

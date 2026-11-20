@@ -5,9 +5,9 @@ import type { BestTimes } from "@/lib/storage";
 import { formatTime } from "@/lib/format";
 import type { AppTheme } from "@/hooks/useTheme";
 import { THEME_CONTENT } from "@/lib/themeContent";
+import { ThemeText } from "./ThemeText";
 
 interface StartScreenProps {
-  theme: AppTheme;
   hasSavedGame: boolean;
   bestTimes: BestTimes;
   isGenerating: boolean;
@@ -15,7 +15,7 @@ interface StartScreenProps {
   onResume: () => void;
 }
 
-function DifficultyIcon({ theme, difficulty }: { theme: AppTheme; difficulty: Difficulty }) {
+function DifficultyGlyph({ theme, difficulty }: { theme: AppTheme; difficulty: Difficulty }) {
   const common = { fill: "none", strokeWidth: 1.75, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
 
   if (theme === "istanbul") {
@@ -88,23 +88,35 @@ function DifficultyIcon({ theme, difficulty }: { theme: AppTheme; difficulty: Di
   }
 }
 
+function DifficultyIcon({ difficulty }: { difficulty: Difficulty }) {
+  return (
+    <>
+      <span className="theme-copy-beach">
+        <DifficultyGlyph theme="beach" difficulty={difficulty} />
+      </span>
+      <span className="theme-copy-istanbul">
+        <DifficultyGlyph theme="istanbul" difficulty={difficulty} />
+      </span>
+    </>
+  );
+}
+
 export function StartScreen({
-  theme,
   hasSavedGame,
   bestTimes,
   isGenerating,
   onStart,
   onResume,
 }: StartScreenProps) {
-  const content = THEME_CONTENT[theme];
-
   return (
     <div className="relative flex w-full max-w-md flex-col items-center gap-7 px-4 py-10 text-center">
       <div>
         <h1 className="font-display text-5xl font-extrabold tracking-tight text-ocean-900 drop-shadow-sm sm:text-6xl">
-          {content.title}
+          <ThemeText beach={THEME_CONTENT.beach.title} istanbul={THEME_CONTENT.istanbul.title} />
         </h1>
-        <p className="mt-2 font-medium text-ocean-800/70">{content.tagline}</p>
+        <p className="mt-2 font-medium text-ocean-800">
+          <ThemeText beach={THEME_CONTENT.beach.tagline} istanbul={THEME_CONTENT.istanbul.tagline} />
+        </p>
       </div>
 
       {hasSavedGame && (
@@ -112,7 +124,7 @@ export function StartScreen({
           type="button"
           onClick={onResume}
           disabled={isGenerating}
-          className="w-full rounded-full bg-gradient-to-b from-ocean-400 to-ocean-600 px-6 py-3 text-lg font-bold text-white shadow-[0_6px_0_0_rgba(30,98,114,0.6)] transition-transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_3px_0_0_rgba(30,98,114,0.6)] disabled:cursor-wait disabled:opacity-60"
+          className="w-full rounded-full bg-gradient-to-b from-ocean-600 to-ocean-800 px-6 py-3 text-lg font-bold text-white shadow-[0_6px_0_0_var(--shadow-ocean)] transition-transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_3px_0_0_var(--shadow-ocean)] disabled:cursor-wait disabled:opacity-60"
         >
           Continue Game
         </button>
@@ -125,16 +137,19 @@ export function StartScreen({
             type="button"
             disabled={isGenerating}
             onClick={() => onStart(difficulty)}
-            className="flex flex-col items-start gap-1.5 rounded-2xl border-2 border-sand-300 bg-sand-50/90 px-5 py-4 text-left shadow-[0_4px_0_0_rgba(180,124,48,0.35)] backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-white disabled:cursor-wait disabled:opacity-60"
+            className="flex flex-col items-start gap-1.5 rounded-2xl border-2 border-sand-300 bg-sand-50 px-5 py-4 text-left shadow-[0_4px_0_0_var(--shadow-sand)] transition-all hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-white disabled:cursor-wait disabled:opacity-60"
           >
             <div className="flex w-full items-center justify-between">
               <span className="font-display text-lg font-bold text-ocean-900">
                 {DIFFICULTY_LABELS[difficulty]}
               </span>
-              <DifficultyIcon theme={theme} difficulty={difficulty} />
+              <DifficultyIcon difficulty={difficulty} />
             </div>
-            <span className="text-sm text-sand-800/80">
-              {content.difficultyDescriptions[difficulty]}
+            <span className="text-sm text-sand-800">
+              <ThemeText
+                beach={THEME_CONTENT.beach.difficultyDescriptions[difficulty]}
+                istanbul={THEME_CONTENT.istanbul.difficultyDescriptions[difficulty]}
+              />
             </span>
             {bestTimes[difficulty] !== null && (
               <span className="mt-1 rounded-full bg-ocean-100 px-2.5 py-0.5 text-xs font-semibold text-ocean-700">
@@ -146,7 +161,12 @@ export function StartScreen({
       </div>
 
       {isGenerating && (
-        <p className="text-sm font-medium text-ocean-800/70">{content.generatingText}</p>
+        <p className="text-sm font-medium text-ocean-800">
+          <ThemeText
+            beach={THEME_CONTENT.beach.generatingText}
+            istanbul={THEME_CONTENT.istanbul.generatingText}
+          />
+        </p>
       )}
     </div>
   );

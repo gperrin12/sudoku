@@ -1,40 +1,68 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useSyncExternalStore } from "react";
+import {
+  THEME_CONTENT,
+  THEME_STORAGE_KEY,
+  type AppTheme,
+} from "@/lib/themeContent";
 
-export type AppTheme = "beach" | "istanbul";
+export type { AppTheme };
 
-const STORAGE_KEY = "sudoku:theme:v1";
+const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-function isAppTheme(value: string | null): value is AppTheme {
-  return value === "beach" || value === "istanbul";
+function readTheme(): AppTheme {
+  try {
+    return window.localStorage.getItem(THEME_STORAGE_KEY) === "istanbul" ? "istanbul" : "beach";
+  } catch {
+    return "beach";
+  }
+}
+
+function subscribe(onStoreChange: () => void) {
+  window.addEventListener("storage", onStoreChange);
+  window.addEventListener("sudoku-theme", onStoreChange);
+  return () => {
+    window.removeEventListener("storage", onStoreChange);
+    window.removeEventListener("sudoku-theme", onStoreChange);
+  };
+}
+
+function getServerTheme(): AppTheme {
+  return "beach";
+}
+
+function applyTheme(theme: AppTheme) {
+  document.documentElement.dataset.theme = theme;
+  document.title = THEME_CONTENT[theme].title;
 }
 
 export function useTheme() {
-  const [theme, setThemeState] = useState<AppTheme>("beach");
+  const theme = useSyncExternalStore(subscribe, readTheme, getServerTheme);
+
+  useIsoLayoutEffect(() => {
+    // Read storage directly so the server snapshot ("beach") cannot clobber
+    // a theme the pre-paint script already applied.
+    document.documentElement.dataset.theme = readTheme();
+  }, [theme]);
 
   useEffect(() => {
-    // Reading localStorage must happen client-side only; doing this via a lazy
-    // useState initializer would cause a server/client hydration mismatch.
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (isAppTheme(stored)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setThemeState(stored);
-    }
-  }, []);
+    document.title = THEME_CONTENT[readTheme()].title;
+  }, [theme]);
 
   const setTheme = useCallback((next: AppTheme) => {
-    setThemeState(next);
     try {
-      window.localStorage.setItem(STORAGE_KEY, next);
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
       // ignore
     }
+    applyTheme(next);
+    window.dispatchEvent(new Event("sudoku-theme"));
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setTheme(theme === "beach" ? "istanbul" : "beach");
-  }, [theme, setTheme]);
+    setTheme(readTheme() === "beach" ? "istanbul" : "beach");
+  }, [setTheme]);
 
   return { theme, setTheme, toggleTheme };
 }
