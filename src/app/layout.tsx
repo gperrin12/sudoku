@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Baloo_2, Nunito } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const baloo = Baloo_2({
@@ -28,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${baloo.variable} ${nunito.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
