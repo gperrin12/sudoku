@@ -34,6 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-theme="istanbul"
       suppressHydrationWarning
       className={`${baloo.variable} ${cinzel.variable} ${nunito.variable} h-full antialiased`}
     >

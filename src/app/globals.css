@@ -5,8 +5,7 @@
   --foreground: #0f3e46;
 }
 
-/* Beach (default) theme palette */
-:root,
+/* Beach theme palette. Istanbul is the default via data-theme on <html>. */
 [data-theme="beach"] {
   --clr-sand-50: #fdf9f0;
   --clr-sand-100: #faf0d9;
@@ -148,8 +147,8 @@ body {
   outline-offset: 2px;
 }
 
-/* Both backdrops and both copies are in the server HTML. The pre-paint
-   script sets data-theme on <html>, so the first paint matches localStorage. */
+/* Both backdrops and both copies are in the server HTML. <html> defaults to
+   Istanbul; the pre-paint script switches to beach only when that theme was saved. */
 .theme-backdrop-istanbul {
   display: none;
 }
