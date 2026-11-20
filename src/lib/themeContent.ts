@@ -42,5 +42,5 @@ export const THEME_CONTENT: Record<AppTheme, ThemeContent> = {
   },
 };
 
-/** Runs before paint so a stored theme does not flash the beach palette. */
-export const THEME_INIT_SCRIPT = `(function(){try{var s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});var t=s==="istanbul"?"istanbul":"beach";document.documentElement.setAttribute("data-theme",t);document.title=t==="istanbul"?${JSON.stringify(THEME_CONTENT.istanbul.title)}:${JSON.stringify(THEME_CONTENT.beach.title)};}catch(e){}})();`;
+/** Runs before paint. Istanbul is the default unless beach was explicitly saved. */
+export const THEME_INIT_SCRIPT = `(function(){try{var s=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});var t=s==="beach"?"beach":"istanbul";document.documentElement.setAttribute("data-theme",t);document.title=t==="beach"?${JSON.stringify(THEME_CONTENT.beach.title)}:${JSON.stringify(THEME_CONTENT.istanbul.title)};}catch(e){}})();`;

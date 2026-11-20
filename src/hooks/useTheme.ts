@@ -13,9 +13,9 @@ const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayout
 
 function readTheme(): AppTheme {
   try {
-    return window.localStorage.getItem(THEME_STORAGE_KEY) === "istanbul" ? "istanbul" : "beach";
+    return window.localStorage.getItem(THEME_STORAGE_KEY) === "beach" ? "beach" : "istanbul";
   } catch {
-    return "beach";
+    return "istanbul";
   }
 }
 
@@ -29,7 +29,7 @@ function subscribe(onStoreChange: () => void) {
 }
 
 function getServerTheme(): AppTheme {
-  return "beach";
+  return "istanbul";
 }
 
 function applyTheme(theme: AppTheme) {
@@ -41,7 +41,7 @@ export function useTheme() {
   const theme = useSyncExternalStore(subscribe, readTheme, getServerTheme);
 
   useIsoLayoutEffect(() => {
-    // Read storage directly so the server snapshot ("beach") cannot clobber
+    // Read storage directly so the server snapshot ("istanbul") cannot clobber
     // a theme the pre-paint script already applied.
     document.documentElement.dataset.theme = readTheme();
   }, [theme]);
