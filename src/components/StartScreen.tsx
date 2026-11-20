@@ -3,6 +3,9 @@
 import { DIFFICULTIES, DIFFICULTY_LABELS, type Difficulty } from "@/lib/sudoku";
 import type { BestTimes } from "@/lib/storage";
 import { formatTime } from "@/lib/format";
+import type { AppTheme } from "@/hooks/useTheme";
+import { THEME_CONTENT } from "@/lib/themeContent";
+import { ThemeText } from "./ThemeText";
 
 interface StartScreenProps {
   hasSavedGame: boolean;
@@ -12,15 +15,46 @@ interface StartScreenProps {
   onResume: () => void;
 }
 
-const DIFFICULTY_DESCRIPTIONS: Record<Difficulty, string> = {
-  easy: "Calm waters",
-  medium: "Gentle waves",
-  hard: "Choppy seas",
-  expert: "Riptide warning",
-};
-
-function DifficultyIcon({ difficulty }: { difficulty: Difficulty }) {
+function DifficultyGlyph({ theme, difficulty }: { theme: AppTheme; difficulty: Difficulty }) {
   const common = { fill: "none", strokeWidth: 1.75, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+
+  if (theme === "istanbul") {
+    switch (difficulty) {
+      case "easy":
+        return (
+          <svg viewBox="0 0 24 24" className="h-7 w-7 text-sun-600" fill="currentColor">
+            <path d="M12 3c-3 1-4 4-3 7 .6 1.8 2 2.6 3 2.6s2.4-.8 3-2.6c1-3 0-6-3-7z" />
+            <path d="M12 12.6v7.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
+        );
+      case "medium":
+        return (
+          <svg viewBox="0 0 24 24" className="h-7 w-7 text-ocean-500" {...common} stroke="currentColor">
+            <path d="M7 4h10l-1.5 6.5c-.3 1.3-1.1 2.3-3.5 2.3s-3.2-1-3.5-2.3L7 4z" />
+            <ellipse cx="12" cy="19" rx="5.5" ry="1.3" />
+          </svg>
+        );
+      case "hard":
+        return (
+          <svg viewBox="0 0 24 24" className="h-7 w-7 text-ocean-600" fill="currentColor">
+            <path d="M12 2a5 5 0 0 1 5 5c0 1.8-.9 2.7-1.8 3.6-.7.7-1.2 1.4-1.2 2.4h-4c0-1-.5-1.7-1.2-2.4C7.9 9.7 7 8.8 7 7a5 5 0 0 1 5-5z" />
+            <rect x="9" y="13" width="6" height="2" />
+            <rect x="6.5" y="15.3" width="11" height="5" rx="0.6" />
+          </svg>
+        );
+      case "expert":
+        return (
+          <svg viewBox="0 0 24 24" className="h-7 w-7 text-coral-600">
+            <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" strokeWidth="1" />
+            <circle cx="12" cy="12" r="8.3" fill="#1680a8" />
+            <circle cx="12" cy="12" r="6" fill="#fdf8ec" />
+            <circle cx="12" cy="12" r="3.6" fill="#1680a8" />
+            <circle cx="12" cy="12" r="1.6" fill="#0f2e40" />
+          </svg>
+        );
+    }
+  }
+
   switch (difficulty) {
     case "easy":
       return (
@@ -54,6 +88,19 @@ function DifficultyIcon({ difficulty }: { difficulty: Difficulty }) {
   }
 }
 
+function DifficultyIcon({ difficulty }: { difficulty: Difficulty }) {
+  return (
+    <>
+      <span className="theme-copy-beach">
+        <DifficultyGlyph theme="beach" difficulty={difficulty} />
+      </span>
+      <span className="theme-copy-istanbul">
+        <DifficultyGlyph theme="istanbul" difficulty={difficulty} />
+      </span>
+    </>
+  );
+}
+
 export function StartScreen({
   hasSavedGame,
   bestTimes,
@@ -65,10 +112,10 @@ export function StartScreen({
     <div className="relative flex w-full max-w-md flex-col items-center gap-7 px-4 py-10 text-center">
       <div>
         <h1 className="font-display text-5xl font-extrabold tracking-tight text-ocean-900 drop-shadow-sm sm:text-6xl">
-          Sudoku Beach
+          <ThemeText beach={THEME_CONTENT.beach.title} istanbul={THEME_CONTENT.istanbul.title} />
         </h1>
-        <p className="mt-2 font-medium text-ocean-800/70">
-          Pick a difficulty and catch some rays
+        <p className="mt-2 font-medium text-ocean-800">
+          <ThemeText beach={THEME_CONTENT.beach.tagline} istanbul={THEME_CONTENT.istanbul.tagline} />
         </p>
       </div>
 
@@ -77,7 +124,7 @@ export function StartScreen({
           type="button"
           onClick={onResume}
           disabled={isGenerating}
-          className="w-full rounded-full bg-gradient-to-b from-ocean-400 to-ocean-600 px-6 py-3 text-lg font-bold text-white shadow-[0_6px_0_0_rgba(30,98,114,0.6)] transition-transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_3px_0_0_rgba(30,98,114,0.6)] disabled:cursor-wait disabled:opacity-60"
+          className="w-full rounded-full bg-gradient-to-b from-ocean-600 to-ocean-800 px-6 py-3 text-lg font-bold text-white shadow-[0_6px_0_0_var(--shadow-ocean)] transition-transform hover:-translate-y-0.5 active:translate-y-0 active:shadow-[0_3px_0_0_var(--shadow-ocean)] disabled:cursor-wait disabled:opacity-60"
         >
           Continue Game
         </button>
@@ -90,7 +137,7 @@ export function StartScreen({
             type="button"
             disabled={isGenerating}
             onClick={() => onStart(difficulty)}
-            className="flex flex-col items-start gap-1.5 rounded-2xl border-2 border-sand-300 bg-sand-50/90 px-5 py-4 text-left shadow-[0_4px_0_0_rgba(180,124,48,0.35)] backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-white disabled:cursor-wait disabled:opacity-60"
+            className="flex flex-col items-start gap-1.5 rounded-2xl border-2 border-sand-300 bg-sand-50 px-5 py-4 text-left shadow-[0_4px_0_0_var(--shadow-sand)] transition-all hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-white disabled:cursor-wait disabled:opacity-60"
           >
             <div className="flex w-full items-center justify-between">
               <span className="font-display text-lg font-bold text-ocean-900">
@@ -98,7 +145,12 @@ export function StartScreen({
               </span>
               <DifficultyIcon difficulty={difficulty} />
             </div>
-            <span className="text-sm text-sand-800/80">{DIFFICULTY_DESCRIPTIONS[difficulty]}</span>
+            <span className="text-sm text-sand-800">
+              <ThemeText
+                beach={THEME_CONTENT.beach.difficultyDescriptions[difficulty]}
+                istanbul={THEME_CONTENT.istanbul.difficultyDescriptions[difficulty]}
+              />
+            </span>
             {bestTimes[difficulty] !== null && (
               <span className="mt-1 rounded-full bg-ocean-100 px-2.5 py-0.5 text-xs font-semibold text-ocean-700">
                 Best: {formatTime(bestTimes[difficulty] as number)}
@@ -109,7 +161,12 @@ export function StartScreen({
       </div>
 
       {isGenerating && (
-        <p className="text-sm font-medium text-ocean-800/70">Rolling in a fresh puzzle…</p>
+        <p className="text-sm font-medium text-ocean-800">
+          <ThemeText
+            beach={THEME_CONTENT.beach.generatingText}
+            istanbul={THEME_CONTENT.istanbul.generatingText}
+          />
+        </p>
       )}
     </div>
   );

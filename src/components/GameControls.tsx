@@ -15,12 +15,14 @@ function ControlButton({
   onClick,
   disabled,
   active,
+  pressed,
   icon,
 }: {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   active?: boolean;
+  pressed?: boolean;
   icon: React.ReactNode;
 }) {
   return (
@@ -28,10 +30,11 @@ function ControlButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
+      {...(pressed === undefined ? {} : { "aria-pressed": pressed })}
       className={`flex flex-1 flex-col items-center gap-1 rounded-xl border-2 px-2 py-2 text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:translate-y-0 sm:text-sm ${
         active
-          ? "border-ocean-500 bg-ocean-500 text-white shadow-[0_3px_0_0_rgba(30,98,114,0.6)]"
-          : "border-sand-300 bg-white text-ocean-800 shadow-[0_3px_0_0_rgba(180,124,48,0.3)] hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-ocean-50"
+          ? "border-ocean-700 bg-ocean-700 text-white shadow-[0_3px_0_0_var(--shadow-ocean)]"
+          : "border-sand-300 bg-white text-ocean-800 shadow-[0_3px_0_0_var(--shadow-sand)] hover:-translate-y-0.5 hover:border-ocean-400 hover:bg-ocean-50"
       }`}
     >
       <span className="h-5 w-5">{icon}</span>
@@ -80,6 +83,7 @@ export function GameControls({
       <ControlButton
         label="Notes"
         active={isNotesMode}
+        pressed={isNotesMode}
         disabled={disabled}
         onClick={onToggleNotes}
         icon={

@@ -1,17 +1,28 @@
 "use client";
 
 import { useSudokuGame } from "@/hooks/useSudokuGame";
+import { useTheme } from "@/hooks/useTheme";
 import { BeachBackdrop } from "./BeachBackdrop";
+import { IstanbulBackdrop } from "./IstanbulBackdrop";
+import { ThemeToggle } from "./ThemeToggle";
 import { StartScreen } from "./StartScreen";
 import { GameScreen } from "./GameScreen";
 import { WinOverlay } from "./WinOverlay";
 
 export function SudokuApp() {
   const game = useSudokuGame();
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center">
-      <BeachBackdrop />
+      <div className="theme-backdrop-beach">
+        <BeachBackdrop />
+      </div>
+      <div className="theme-backdrop-istanbul">
+        <IstanbulBackdrop />
+      </div>
+      <ThemeToggle theme={theme} onChange={setTheme} />
+
       {game.status === "menu" ? (
         <StartScreen
           hasSavedGame={game.hasSavedGame}

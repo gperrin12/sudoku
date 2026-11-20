@@ -66,6 +66,7 @@ export function useSudokuGame() {
   const [isNewBest, setIsNewBest] = useState(false);
 
   const historyRef = useRef<HistoryEntry[]>([]);
+  const generationRef = useRef(0);
 
   useEffect(() => {
     // Reading localStorage must happen client-side only; doing this via a lazy
@@ -107,8 +108,10 @@ export function useSudokuGame() {
 
   const startNewGame = useCallback(
     (newDifficulty: Difficulty) => {
+      const generation = ++generationRef.current;
       setIsGenerating(true);
       window.setTimeout(() => {
+        if (generation !== generationRef.current) return;
         const { puzzle: p, solution: s } = generatePuzzle(newDifficulty);
         setPuzzle(p);
         setSolution(s);
@@ -166,20 +169,22 @@ export function useSudokuGame() {
       if (!boardsEqual(candidate, solution)) return;
       setStatus("won");
       clearGameState();
-      const previousBest = bestTimes[difficulty];
+      const previousBest = loadBestTimes()[difficulty];
       setBestTimes(saveBestTime(difficulty, elapsedSeconds));
       setIsNewBest(previousBest === null || elapsedSeconds < previousBest);
     },
-    [solution, difficulty, elapsedSeconds, bestTimes]
+    [solution, difficulty, elapsedSeconds]
   );
 
   const inputDigit = useCallback(
     (digit: number) => {
-      if (status !== "playing" || !selected || !board || !given || !solution) return;
+      if (status !== "playing" || isPaused || !selected || !board || !given || !solution) return;
       const { r, c } = selected;
       if (given[r][c]) return;
 
       if (isNotesMode) {
+        if (board[r][c] !== 0) return;
+        pushHistory(board, notes);
         setNotes((prev) => {
           const next = cloneNotes(prev);
           const cellNotes = next[r][c];
@@ -210,11 +215,11 @@ export function useSudokuGame() {
 
       finishIfWon(newBoard);
     },
-    [status, selected, board, given, solution, isNotesMode, notes, pushHistory, finishIfWon]
+    [status, isPaused, selected, board, given, solution, isNotesMode, notes, pushHistory, finishIfWon]
   );
 
   const clearCell = useCallback(() => {
-    if (status !== "playing" || !selected || !board || !given) return;
+    if (status !== "playing" || isPaused || !selected || !board || !given) return;
     const { r, c } = selected;
     if (given[r][c]) return;
     if (board[r][c] === 0 && notes[r][c].length === 0) return;
@@ -228,22 +233,23 @@ export function useSudokuGame() {
       next[r][c] = [];
       return next;
     });
-  }, [status, selected, board, given, notes, pushHistory]);
+  }, [status, isPaused, selected, board, given, notes, pushHistory]);
 
   const undo = useCallback(() => {
+    if (status !== "playing" || isPaused) return;
     const last = historyRef.current.pop();
     if (!last) return;
     setBoard(last.board);
     setNotes(last.notes);
     setHistoryLength(historyRef.current.length);
-  }, []);
+  }, [status, isPaused]);
 
   const toggleNotesMode = useCallback(() => setIsNotesMode((v) => !v), []);
 
   const togglePause = useCallback(() => setIsPaused((v) => !v), []);
 
   const useHint = useCallback(() => {
-    if (status !== "playing" || !selected || !board || !given || !solution) return;
+    if (status !== "playing" || isPaused || !selected || !board || !given || !solution) return;
     const { r, c } = selected;
     if (given[r][c]) return;
     if (board[r][c] === solution[r][c]) return;
@@ -258,11 +264,11 @@ export function useSudokuGame() {
       return next;
     });
     finishIfWon(newBoard);
-  }, [status, selected, board, given, solution, notes, pushHistory, finishIfWon]);
+  }, [status, isPaused, selected, board, given, solution, notes, pushHistory, finishIfWon]);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (status !== "playing") return;
+      if (status !== "playing" || isPaused) return;
 
       if (e.key >= "1" && e.key <= "9") {
         e.preventDefault();
@@ -300,7 +306,7 @@ export function useSudokuGame() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [status, inputDigit, clearCell, toggleNotesMode, undo]);
+  }, [status, isPaused, inputDigit, clearCell, toggleNotesMode, undo]);
 
   const conflicts = useMemo(() => {
     const result = Array.from({ length: 9 }, () => new Array(9).fill(false));

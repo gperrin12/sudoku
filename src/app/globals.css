@@ -5,50 +5,190 @@
   --foreground: #0f3e46;
 }
 
+/* Beach (default) theme palette */
+:root,
+[data-theme="beach"] {
+  --clr-sand-50: #fdf9f0;
+  --clr-sand-100: #faf0d9;
+  --clr-sand-200: #f4e0b3;
+  --clr-sand-300: #eccc85;
+  --clr-sand-400: #e2b45c;
+  --clr-sand-500: #d59a3e;
+  --clr-sand-600: #b47c30;
+  --clr-sand-700: #8f6229;
+  --clr-sand-800: #6f4d26;
+  --clr-sand-900: #593f22;
+
+  --clr-ocean-50: #eafbfc;
+  --clr-ocean-100: #cff3f6;
+  --clr-ocean-200: #a1e6ed;
+  --clr-ocean-300: #69d1dd;
+  --clr-ocean-400: #34b3c4;
+  --clr-ocean-500: #1f96a9;
+  --clr-ocean-600: #1c7a8c;
+  --clr-ocean-700: #1e6272;
+  --clr-ocean-800: #1f505d;
+  --clr-ocean-900: #123540;
+
+  --clr-coral-100: #ffe4dc;
+  --clr-coral-300: #ffab93;
+  --clr-coral-400: #ff8a6b;
+  --clr-coral-500: #ff6b48;
+  --clr-coral-600: #ec5030;
+  --clr-coral-700: #c53d21;
+  --clr-coral-800: #9a341c;
+
+  --shadow-ocean: rgb(18 53 64 / 0.6);
+  --shadow-sand: rgb(111 77 38 / 0.35);
+
+  --clr-sun-200: #fff3c4;
+  --clr-sun-300: #ffe58a;
+  --clr-sun-400: #ffd35c;
+  --clr-sun-500: #ffbf3d;
+  --clr-sun-600: #f5a623;
+
+  --font-display: var(--font-display-beach);
+}
+
+/* Istanbul theme palette */
+[data-theme="istanbul"] {
+  --clr-sand-50: #fdf8ec;
+  --clr-sand-100: #f8ecd2;
+  --clr-sand-200: #efd9a8;
+  --clr-sand-300: #e3c179;
+  --clr-sand-400: #d1a24f;
+  --clr-sand-500: #b9823a;
+  --clr-sand-600: #96672f;
+  --clr-sand-700: #764f29;
+  --clr-sand-800: #5c3f26;
+  --clr-sand-900: #4a3420;
+
+  --clr-ocean-50: #eaf6fb;
+  --clr-ocean-100: #cdeaf5;
+  --clr-ocean-200: #9ad7ea;
+  --clr-ocean-300: #5cbdda;
+  --clr-ocean-400: #2a9dc4;
+  --clr-ocean-500: #1680a8;
+  --clr-ocean-600: #126587;
+  --clr-ocean-700: #134f6b;
+  --clr-ocean-800: #143f55;
+  --clr-ocean-900: #0f2e40;
+
+  --clr-coral-100: #fbdcd9;
+  --clr-coral-300: #ef9a8e;
+  --clr-coral-400: #e87766;
+  --clr-coral-500: #d94c38;
+  --clr-coral-600: #b53223;
+  --clr-coral-700: #8f271b;
+  --clr-coral-800: #6e1d14;
+
+  --shadow-ocean: rgb(15 46 64 / 0.6);
+  --shadow-sand: rgb(92 63 38 / 0.35);
+
+  --clr-sun-200: #f7e3a1;
+  --clr-sun-300: #f0cf6e;
+  --clr-sun-400: #e6b83f;
+  --clr-sun-500: #d19f27;
+  --clr-sun-600: #b07f1d;
+
+  --font-display: var(--font-display-istanbul);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
 
-  --color-sand-50: #fdf9f0;
-  --color-sand-100: #faf0d9;
-  --color-sand-200: #f4e0b3;
-  --color-sand-300: #eccc85;
-  --color-sand-400: #e2b45c;
-  --color-sand-500: #d59a3e;
-  --color-sand-600: #b47c30;
-  --color-sand-700: #8f6229;
-  --color-sand-800: #6f4d26;
-  --color-sand-900: #593f22;
+  --color-sand-50: var(--clr-sand-50);
+  --color-sand-100: var(--clr-sand-100);
+  --color-sand-200: var(--clr-sand-200);
+  --color-sand-300: var(--clr-sand-300);
+  --color-sand-400: var(--clr-sand-400);
+  --color-sand-500: var(--clr-sand-500);
+  --color-sand-600: var(--clr-sand-600);
+  --color-sand-700: var(--clr-sand-700);
+  --color-sand-800: var(--clr-sand-800);
+  --color-sand-900: var(--clr-sand-900);
 
-  --color-ocean-50: #eafbfc;
-  --color-ocean-100: #cff3f6;
-  --color-ocean-200: #a1e6ed;
-  --color-ocean-300: #69d1dd;
-  --color-ocean-400: #34b3c4;
-  --color-ocean-500: #1f96a9;
-  --color-ocean-600: #1c7a8c;
-  --color-ocean-700: #1e6272;
-  --color-ocean-800: #1f505d;
-  --color-ocean-900: #123540;
+  --color-ocean-50: var(--clr-ocean-50);
+  --color-ocean-100: var(--clr-ocean-100);
+  --color-ocean-200: var(--clr-ocean-200);
+  --color-ocean-300: var(--clr-ocean-300);
+  --color-ocean-400: var(--clr-ocean-400);
+  --color-ocean-500: var(--clr-ocean-500);
+  --color-ocean-600: var(--clr-ocean-600);
+  --color-ocean-700: var(--clr-ocean-700);
+  --color-ocean-800: var(--clr-ocean-800);
+  --color-ocean-900: var(--clr-ocean-900);
 
-  --color-coral-100: #ffe4dc;
-  --color-coral-300: #ffab93;
-  --color-coral-400: #ff8a6b;
-  --color-coral-500: #ff6b48;
-  --color-coral-600: #ec5030;
-  --color-coral-700: #c53d21;
+  --color-coral-100: var(--clr-coral-100);
+  --color-coral-300: var(--clr-coral-300);
+  --color-coral-400: var(--clr-coral-400);
+  --color-coral-500: var(--clr-coral-500);
+  --color-coral-600: var(--clr-coral-600);
+  --color-coral-700: var(--clr-coral-700);
+  --color-coral-800: var(--clr-coral-800);
 
-  --color-sun-200: #fff3c4;
-  --color-sun-300: #ffe58a;
-  --color-sun-400: #ffd35c;
-  --color-sun-500: #ffbf3d;
-  --color-sun-600: #f5a623;
+  --color-sun-200: var(--clr-sun-200);
+  --color-sun-300: var(--clr-sun-300);
+  --color-sun-400: var(--clr-sun-400);
+  --color-sun-500: var(--clr-sun-500);
+  --color-sun-600: var(--clr-sun-600);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+:focus-visible {
+  outline: 2px solid var(--clr-ocean-800);
+  outline-offset: 2px;
+}
+
+/* Both backdrops and both copies are in the server HTML. The pre-paint
+   script sets data-theme on <html>, so the first paint matches localStorage. */
+.theme-backdrop-istanbul {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-backdrop-beach {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-backdrop-istanbul {
+  display: block;
+}
+
+.theme-copy-istanbul {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-copy-beach {
+  display: none;
+}
+
+html[data-theme="istanbul"] .theme-copy-istanbul {
+  display: inline;
+}
+
+.theme-option {
+  color: var(--clr-ocean-700);
+}
+
+.theme-option:hover {
+  background-color: var(--clr-ocean-100);
+}
+
+html:not([data-theme="istanbul"]) .theme-option[data-theme-option="beach"],
+html[data-theme="istanbul"] .theme-option[data-theme-option="istanbul"] {
+  background-color: var(--clr-ocean-700);
+  color: #fff;
+}
+
+html:not([data-theme="istanbul"]) .theme-option[data-theme-option="beach"]:hover,
+html[data-theme="istanbul"] .theme-option[data-theme-option="istanbul"]:hover {
+  background-color: var(--clr-ocean-700);
 }
